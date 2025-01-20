@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Image Generator</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #f7f9fc;
+    }
+    .container {
+      text-align: center;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 600px;
+    }
+    h1 {
+      font-size: 2.5em;
+      color: #333;
+      margin-bottom: 20px;
+    }
+    input {
+      padding: 12px;
+      width: 80%;
+      font-size: 16px;
+      margin: 10px 0;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    input:focus {
+      border-color: #5c6bc0;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: #5c6bc0;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #3949ab;
+    }
+    button:active {
+      background-color: #303f9f;
+    }
+    img {
+      margin-top: 20px;
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      text-decoration: none;
+      background: #28a745;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+    a:hover {
+      background: #218838;
+    }
+    #result {
+      margin-top: 20px;
+    }
+    #message {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>AI Image Generator</h1>
+    <input type="text" id="prompt" placeholder="Enter a prompt..." />
+    <button onclick="generateImage()">Generate Image</button>
+    <div id="result">
+      <p id="message"></p>
+      <img id="generatedImage" style="display: none;" />
+      <a id="downloadLink" href="#" download style="display: none;">Download Image</a>
+    </div>
+  </div>
+
+  <script>
+    async function generateImage() {
+      const prompt = document.getElementById('prompt').value;
+      const messageElement = document.getElementById('message');
+      const imageElement = document.getElementById('generatedImage');
+      const downloadLink = document.getElementById('downloadLink');
+
+      // Clear previous results
+      messageElement.textContent = '';
+      imageElement.style.display = 'none';
+      downloadLink.style.display = 'none';
+
+      if (!prompt.trim()) {
+        messageElement.textContent = 'Please enter a prompt.';
+        return;
+      }
+
+      messageElement.textContent = 'Generating image, please wait...';
+
+      try {
+        const response = await fetch('http://127.0.0.1:5000/generate-image', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ prompt }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          const imageUrl = `http://127.0.0.1:5000/generated_images/${data.file_path}`;
+          
+          // Debugging the image URL
+          console.log("Generated Image URL:", imageUrl);
+
+          messageElement.textContent = 'Image generated successfully!';
+          imageElement.src = imageUrl;
+          imageElement.style.display = 'block';
+          downloadLink.href = imageUrl;
+          downloadLink.style.display = 'block';
+        } else {
+          messageElement.textContent = `Error: ${data.error}`;
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        messageElement.textContent = 'An error occurred while generating the image.';
+      }
+    }
+  </script>
+</body>
+</html>
