@@ -106,7 +106,7 @@ Word-Pix simplifies the creative process, making it ideal for artists, designers
 
 ## **Output Image**:
 
-<img src="Output.png" alt="Image Segmentation & Edge Detection Otuput ">
+<img src="generated_images/generated_image_2025-01-20_14-05-12_A_serene_b.png" alt="word-Pix">
 
 # 🛠️ Troubleshooting 
 
