@@ -108,13 +108,6 @@ Word-Pix simplifies the creative process, making it ideal for artists, designers
 
 <img src="generated_images/generated_image_2025-01-20_14-05-12_A_serene_b.png" alt="word-Pix">
 
-# 🛠️ Troubleshooting 
-
-- Ensure the Flask backend is running on <strong> http://127.0.0.1:5000 </strong> before using the frontend.
-
-- Verify the <strong> generated_images </strong> directory exists and is writable.
-
-- Check for errors in the browser's developer tools (Console/Network tabs) if issues arise.
 
 # 🙌 Acknowledgments 
 
